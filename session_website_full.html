@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Academy Courses — Demo</title>
+        <style>
+            /* ------------------------------
+       Base + palette
+       ------------------------------ */
+            :root {
+                --bg: #0b0e13;
+                --panel: #11161f;
+                --surface: #0f141c;
+                --text: #eaf0f6;
+                --muted: #9aa8b6;
+                --brand: #4da3ff;
+                --ok: #2ecc71;
+                --warn: #f1c40f;
+                --danger: #ff6b6b;
+                --border: #1f2732;
+                --zebra: #0d121a;
+            }
+
+            html,
+            body {
+                height: 100%;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font: 14px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial
+            }
+
+            a {
+                color: var(--brand);
+                text-decoration: none
+            }
+
+            a:hover {
+                text-decoration: underline
+            }
+
+            /* ------------------------------
+       Layout helpers (no flexbox)
+       ------------------------------ */
+            .container {
+                /* max-width: 1000px; */
+                margin: 20 auto;
+                padding: 0 16px
+            }
+
+            .panel {
+                background: var(--panel);
+                border: 1px solid var(--border);
+                border-radius: 14px
+            }
+
+            /* ------------------------------
+       NAVBAR (no flex)
+       ------------------------------ */
+            nav {
+                background: var(--surface);
+                border-bottom: 1px solid var(--border)
+            }
+
+            .nav-inner {
+                max-width: 1000px;
+                /* margin: 0 auto; */
+                padding: 10px 16px
+            }
+
+            /* .brand {
+                display: inline-block;
+                font-weight: 800;
+                letter-spacing: .5px
+            } */
+
+            .brand::before {
+                content: "⬢";
+                margin-right: 8px
+            }
+
+            .brand a {
+                color: var(--text)
+            }
+
+            /* simple inline list (no flex) */
+            .menu {
+                list-style: none;
+                padding: 0;
+                margin: 8px 0 0 0
+            }
+
+            .menu li {
+                /* display: inline-block; */
+                margin-right: 14px
+            }
+
+            .menu a {
+                padding: 6px 8px;
+                border-radius: 8px
+            }
+
+            .menu a[aria-current="page"] {
+                background: var(--panel);
+                border: 1px solid var(--border)
+            }
+
+            /* attribute selector */
+            .menu a:hover {
+                background: var(--zebra)
+            }
+
+            /* pseudo-class */
+            .menu a:active {
+                outline: 2px solid var(--brand)
+            }
+
+            /* pseudo-class */
+            .menu a:visited {
+                opacity: .95
+            }
+
+            /* pseudo-class */
+
+            /* highlight external links in navbar using attribute selector */
+            .menu a[href^="http"]::after {
+                content: " ↗";
+                font-size: 12px
+            }
+
+            /* ------------------------------
+       HERO / intro
+       ------------------------------ */
+            .hero {
+                padding: 22px 20px;
+            }
+
+            .hero h1 {
+                margin: 8px 0 6px
+            }
+
+            .hero h1::first-letter {
+                font-size: 60px;
+                color: var(--brand)
+            }
+
+            /* pseudo-element */
+            .hero p {
+                color: var(--muted);
+                margin: 0
+            }
+
+            .breadcrumbs {
+                list-style: disc;
+                padding-left: 18px;
+                color: var(--muted)
+            }
+
+            .breadcrumbs li {
+                display: inline
+            }
+
+            .breadcrumbs li+li::before {
+                content: " › ";
+                color: var(--muted)
+            }
+
+            /* pseudo-element */
+
+            /* emphasize target section when navigated via hash */
+            :target {
+                outline: 2px dashed var(--brand);
+                outline-offset: 6px;
+                background: rgba(77, 163, 255, .06)
+            }
+
+            /* pseudo-class */
+
+            /* ------------------------------
+       TABLE styles
+       ------------------------------ */
+            /* .table-wrap {
+                overflow: auto
+            } */
+
+            table {
+                width: 100%;
+                /* border-collapse: separate; */
+                border-spacing: 0
+            }
+
+            caption {
+                caption-side: top;
+                text-align: left;
+                color: var(--muted);
+                padding: 10px
+            }
+
+            thead th {
+                background: linear-gradient(#151a22, #10151d);
+                position: sticky;
+                top: 0;
+                border-bottom: 1px solid var(--border);
+                /* z-index: 1 */
+            }
+
+            th,
+            td {
+                padding: 10px 12px;
+                text-align: left;
+                border-bottom: 1px solid var(--border)
+            }
+
+            tbody tr:nth-child(odd) {
+                background: var(--zebra)
+            }
+
+            /* pseudo-class */
+            tbody tr:hover {
+                background: rgba(77, 163, 255, .08)
+            }
+
+            /* pseudo-class */
+            tfoot td {
+                font-size: 12px;
+                color: var(--muted)
+            }
+
+            /* badges using attribute selectors */
+            .level {
+                /* display: inline-block; */
+                padding: 3px 8px;
+                border-radius: 999px;
+                border: 1px solid var(--border);
+                font-size: 11px
+            }
+
+            [data-level="Beginner"] {
+                background: #0e151d
+            }
+
+            [data-level="Intermediate"] {
+                background: #0f1a14
+            }
+
+            [data-level="Advanced"] {
+                background: #1a1212
+            }
+
+            /* price color via attribute selector */
+            td[data-price^="$1"] {
+                color: var(--ok)
+            }
+
+            /* starts with 1 -> cheap */
+            td[data-price^="$2"],
+            td[data-price^="$3"] {
+                color: var(--warn)
+            }
+
+            td[data-price^="$4"],
+            td[data-price^="$5"] {
+                color: var(--danger)
+            }
+
+
+            .two-cols {
+                margin-top: 18px
+            }
+
+            .col {
+                /* display: inline-block; */
+                /* vertical-align: top; */
+                width: 60%
+            }
+
+
+
+            .card {
+                padding: 12px 14px;
+                margin-top: 20px
+            }
+
+            .card h3 {
+                margin: 0 0 8px
+            }
+
+            .card ul {
+                margin: 8px 0 0 16px
+            }
+
+            /* 
+            .card li::marker {
+                color: var(--brand)
+            } */
+
+            /* pseudo-element */
+
+            /* ------------------------------
+       FORM (shows :valid / :invalid / :focus)
+       ------------------------------ */
+            form {
+                margin-top: 16px
+            }
+
+
+
+            input[type="email"],
+            input[type="text"],
+            select {
+                width: 100%;
+                padding: 10px 12px;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: #0c1118;
+                color: var(--text)
+            }
+
+            /* input::placeholder {
+                color: #5a6572
+            } */
+
+            /* pseudo-element */
+            input:focus {
+                outline: 2px solid var(--brand);
+                /* border-color: transparent */
+            }
+
+            /* pseudo-class */
+            input:invalid[required] {
+                border-color: var(--danger)
+            }
+
+            /* attribute selector + pseudo-class */
+            input:valid {
+                border-color: var(--ok)
+            }
+
+            /* pseudo-class */
+
+            .note {
+                color: var(--muted);
+                font-size: 12px
+            }
+
+            /* ------------------------------
+       FOOTER
+       ------------------------------ */
+            /* -------------------- SERVICES SECTION -------------------- */
+            .services-section {
+                width: 100%;
+                margin-top: 30px;
+                /* padding: 30px; */
+                text-align: center;
+            }
+
+            .services-section h2 {
+                margin-bottom: 10px;
+            }
+
+            .services-section p {
+                color: var(--muted);
+            }
+
+            .services-cards {
+                width: 100%;
+                /* max-width: 1000px; */
+                margin: 40px auto 0 auto;
+            }
+
+            .service-card {
+                float: left;
+                width: 23%;
+                margin: 1%;
+                background: var(--panel);
+                border-radius: 15px;
+                padding: 20px;
+                text-align: center;
+                transition: all 0.3s;
+                cursor: pointer;
+            }
+
+            .service-card h3 {
+                margin: 10px 0;
+                font-size: 18px;
+            }
+
+            .service-card p {
+                font-size: 14px;
+                color: var(--muted);
+            }
+
+            .circle {
+                width: 60px;
+                height: 60px;
+                margin: 0 auto 10px auto;
+                border-radius: 50%;
+                line-height: 60px;
+                font-weight: bold;
+                font-size: 20px;
+                transition: all 0.3s;
+            }
+
+            /* Circle colors */
+            .circle-blue {
+                border: 2px solid #4da3ff;
+                color: #4da3ff;
+            }
+
+            .circle-red {
+                border: 2px solid #ff6347;
+                color: #ff6347;
+            }
+
+            .circle-green {
+                border: 2px solid #2ecc71;
+                color: #2ecc71;
+            }
+
+            .circle-yellow {
+                border: 2px solid #f1c40f;
+                color: #f1c40f;
+            }
+
+            /* Buttons */
+            button {
+                margin-top: 10px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 8px;
+                color: white;
+                cursor: pointer;
+            }
+
+            .btn-blue {
+                background: #4da3ff;
+            }
+
+            .btn-red {
+                background: #ff6347;
+            }
+
+            .btn-green {
+                background: #2ecc71;
+            }
+
+            .btn-yellow {
+                background: #f1c40f;
+            }
+
+            /* Hover effects */
+            .service-card:hover .circle {
+                background: currentColor;
+                /* color: #fff; */
+                transform: scale(1.2);
+            }
+
+            .service-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0 15px rgba(77, 163, 255, 0.5);
+            }
+
+            /* Clear floats */
+            .clearfix {
+                clear: both;
+            }
+
+
+            footer {
+                margin-top: 26px;
+                padding: 14px 0;
+                border-top: 1px solid var(--border);
+                color: var(--muted);
+                background: var(--surface)
+            }
+
+            .foot-inner {
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: 0 16px
+            }
+
+            footer a[href$=".pdf"]::after {
+                content: " (PDF)"
+            }
+
+            /* attribute selector + pseudo-element */
+
+            /* selection highlight */
+            ::selection {
+                background: rgba(77, 163, 255, .35)
+            }
+
+            /* pseudo-element */
+        </style>
+    </head>
+
+    <body>
+        <!-- NAVBAR -->
+        <nav>
+            <div class="nav-inner">
+                <div class="brand"><a href="#top">Academy</a></div>
+                <ul class="menu">
+                    <li><a href="#courses" aria-current="page">Courses</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="https://example.com" rel="noopener">External</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <main id="top" class="container">
+            <section class="hero" id="about">
+                <ul class="breadcrumbs">
+                    <li><a href="#top">Home</a></li>
+                    <li><a href="#courses">Courses</a></li>
+                </ul>
+                <h1>Upcoming Courses</h1>
+                <p>Browse the schedule and enroll. Select a row to learn more. The table demonstrates zebra stripes,
+                    hover states, attribute selectors and more.</p>
+            </section>
+
+            <!-- TABLE -->
+            <section id="courses" class="panel" style="margin-top:12px">
+                <div class="table-wrap">
+                    <table>
+                        <caption>Course catalog (Q4). Columns: code, title, level, delivery mode, price.</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Code</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Level</th>
+                                <th scope="col">Mode</th>
+                                <th scope="col">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="row-html">
+                                <td>WEB101</td>
+                                <td><a href="#row-html">HTML & Accessibility Essentials</a></td>
+                                <td><span class="level" data-level="Beginner">Beginner</span></td>
+                                <td data-mode="Online">Online</td>
+                                <td class="price" data-price="$199">$199</td>
+                            </tr>
+                            <tr id="row-css">
+                                <td>CSS201</td>
+                                <td><a href="#row-css">Modern CSS: Selectors & Layout</a></td>
+                                <td><span class="level" data-level="Intermediate">Intermediate</span></td>
+                                <td data-mode="In-person">In‑person</td>
+                                <td class="price" data-price="$249">$249</td>
+                            </tr>
+                            <tr id="row-js">
+                                <td>JS301</td>
+                                <td><a href="#row-js">JavaScript Fundamentals</a></td>
+                                <td><span class="level" data-level="Beginner">Beginner</span></td>
+                                <td data-mode="Online">Online</td>
+                                <td class="price" data-price="$349">$349</td>
+                            </tr>
+                            <tr id="row-sql">
+                                <td>DB210</td>
+                                <td><a href="#row-sql">Intro to SQL & Data Modeling</a></td>
+                                <td><span class="level" data-level="Advanced">Advanced</span></td>
+                                <td data-mode="In-person">In‑person</td>
+                                <td class="price" data-price="$499">$499</td>
+                            </tr>
+                            <tr id="row-ui">
+                                <td>UX140</td>
+                                <td><a href="#row-ui">UI Design for Developers</a></td>
+                                <td><span class="level" data-level="Intermediate">Intermediate</span></td>
+                                <td data-mode="Online">Online</td>
+                                <td class="price" data-price="$229">$229</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5">* Prices shown before tax. Last updated <time datetime="2025-08-16">Aug
+                                        16, 2025</time>.</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SIDE NOTES: two simple columns using inline-block (no flex) -->
+            <div class="two-cols">
+                <div class="col">
+                    <div class="card panel" id="contact">
+                        <h3>Need help?</h3>
+                        <ul>
+                            <li>Email support within 24h</li>
+                            <li>Scholarships for students</li>
+                            <li>Corporate packages</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card panel">
+                        <h3>Newsletter</h3>
+                        <form action="#" method="get">
+                            <label for="email">Email <span class="note">(required)</span></label>
+                            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+                            <label for="topic" style="margin-top:10px">Topic</label>
+                            <input id="topic" name="topic" type="text" placeholder="e.g., CSS" list="topic-list">
+                            <datalist id="topic-list">
+                                <option value="HTML">
+                                <option value="CSS">
+                                <option value="JavaScript">
+                            </datalist>
+                            <p class="note">The border turns <em>green</em> when valid and <em>red</em> when invalid,
+                                using <code>:valid</code> and <code>:invalid</code>.</p>
+                            <button type="submit" style="margin-top:8px">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- ACADEMY SERVICES AS CARDS -->
+            <section id="services" class="panel services-section">
+                <h2> Academy Services</h2>
+                <p>Take a look for our Services and Courses we offer for you </p>
+
+                <div class="services-cards">
+                    <!-- CARD 1 -->
+                    <div class="service-card">
+                        <div class="circle circle-blue">1</div>
+                        <h3> Web Courses</h3>
+                        <p>Learn HTML CSS JS and more to create websites and web apps.</p>
+                        <button class="btn-blue"> Register Now! </button>
+                    </div>
+
+                    <!-- CARD 2 -->
+                    <div class="service-card">
+                        <div class="circle circle-red">2</div>
+                        <h3>UI/UX Design</h3>
+                        <p>learn the fundamentals of UI/UX design and create wireframes and prototypes.</p>
+                        <button class="btn-red"> Register Now! </button>
+                    </div>
+
+                    <!-- CARD 3 -->
+                    <div class="service-card">
+                        <div class="circle circle-green">3</div>
+                        <h3>Digital Marketing </h3>
+                        <p>
+                            Learn how to market your products and services online.
+                        </p>
+                        <button class="btn-green"> Register Now! </button>
+                    </div>
+
+                    <!-- CARD 4 -->
+                    <div class="service-card">
+                        <div class="circle circle-yellow">4</div>
+                        <h3> Technical Support</h3>
+                        <p> Support for your IT needs.</p>
+                        <button class="btn-yellow"> Register Now!</button>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="foot-inner">
+                <p>© 2025 Academy. <a href="/files/catalog.pdf">Course catalog</a>. <a href="#top">Back to top</a></p>
+            </div>
+        </footer>
+    </body>
+
+</html>
